@@ -3,7 +3,7 @@
   "author": "Alexander Horn",
   "version": "1.0.0",
   "license" : "BSD-3-Clause",
-  "main": "./chrometopdf.js",
+  "main": "./crtopdf.js",
   "bin": "./cli.js",
   "dependencies": {
     "chrome-launcher": "^0.4.0",
