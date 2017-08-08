@@ -1,5 +1,6 @@
 const chromeLauncher = require('chrome-launcher');
 const CDP = require('chrome-remote-interface');
+const Semaphore = require('./semaphore');
 
 const PAGE_SIZES = {
   'a0': { width: 33.1, height: 46.8 },
@@ -58,6 +59,10 @@ function getRandom(min, max) {
  */
 class CrToPdf {
 
+  constructor() {
+    this.sem = new Semaphore(1);
+  }
+
   /**
    * Initializes Chrome
    */
@@ -87,28 +92,34 @@ class CrToPdf {
    * @returns {Buffer} PDF data
    */
   async convert(opts) {
-    const {Page} = this.protocol;
+    await this.sem.down();
 
-    await Page.enable();
+    try {
+      const {Page} = this.protocol;
 
-    await Page.navigate({ url: opts.url });
+      await Page.enable();
 
-    await new Promise((resolve, reject) => this.protocol.once('Page.loadEventFired', resolve));
+      await Page.navigate({ url: opts.url });
 
-    var pageSize = PAGE_SIZES[(opts.format || 'a4').toLowerCase()];
-    var b64 = await Page.printToPDF({
-      landscape: !!opts.orientation && opts.orientation.toLowerCase() === 'landscape',
-      printBackground: opts.printBackground,
-      paperWidth: pageSize.width,
-      paperHeight: pageSize.height,
-      marginTop: opts.marginTop / CM_PER_INCH,
-      marginBottom: opts.marginBottom / CM_PER_INCH,
-      marginLeft: opts.marginLeft / CM_PER_INCH,
-      marginRight: opts.marginRight / CM_PER_INCH,
-      pageRanges: opts.pageRanges
-    });
+      await new Promise((resolve, reject) => this.protocol.once('Page.loadEventFired', resolve));
 
-    return new Buffer(b64.data, 'base64');
+      var pageSize = PAGE_SIZES[(opts.format || 'a4').toLowerCase()];
+      var b64 = await Page.printToPDF({
+        landscape: !!opts.orientation && opts.orientation.toLowerCase() === 'landscape',
+        printBackground: opts.printBackground,
+        paperWidth: pageSize.width,
+        paperHeight: pageSize.height,
+        marginTop: opts.marginTop / CM_PER_INCH,
+        marginBottom: opts.marginBottom / CM_PER_INCH,
+        marginLeft: opts.marginLeft / CM_PER_INCH,
+        marginRight: opts.marginRight / CM_PER_INCH,
+        pageRanges: opts.pageRanges
+      });
+
+      return new Buffer(b64.data, 'base64');
+    } finally {
+      this.sem.up();
+    }
   }
 };
 
