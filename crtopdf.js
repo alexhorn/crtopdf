@@ -93,7 +93,7 @@ class CrToPdf {
 
     await Page.navigate({ url: opts.url });
 
-    await new Promise((resolve, reject) => Page.loadEventFired(resolve));
+    await new Promise((resolve, reject) => this.protocol.once('Page.loadEventFired', resolve));
 
     var pageSize = PAGE_SIZES[(opts.format || 'a4').toLowerCase()];
     var b64 = await Page.printToPDF({
