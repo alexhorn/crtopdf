@@ -1,0 +1,15 @@
+{
+  "name": "crtopdf",
+  "author": "Alexander Horn",
+  "license" : "BSD-3-Clause",
+  "main": "./chrometopdf.js",
+  "bin": "./cli.js",
+  "dependencies": {
+    "chrome-launcher": "^0.4.0",
+    "chrome-remote-interface": "^0.24.3",
+    "yargs": "^8.0.2"
+  },
+  "engines": {
+    "node": ">7.6"
+  }
+}
