@@ -5,7 +5,7 @@ Requires at least Chrome 59 (Chrome 60 on Windows) and Node 5.7. See `crtopdf --
 
 ## CLI Example
 ```
-npm install -g https://github.com/alexhorn/crtopdf.git
+npm install -g alexhorn/crtopdf
 
 crtopdf -u https://en.wikipedia.org -o wikipedia.pdf
 ```
