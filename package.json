@@ -1,6 +1,7 @@
 {
   "name": "crtopdf",
   "author": "Alexander Horn",
+  "version": "1.0.0",
   "license" : "BSD-3-Clause",
   "main": "./chrometopdf.js",
   "bin": "./cli.js",
