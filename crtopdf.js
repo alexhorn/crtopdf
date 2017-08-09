@@ -33,7 +33,6 @@ function getRandom(min, max) {
  * @property {number} [marginBottom] - Bottom margin in cm
  * @property {number} [marginLeft] - Left margin in cm
  * @property {number} [marginRight] - Right margin in cm
- * @property {number} [marginTop] - Top margin
  * @property {string} [page] - Page ranges, e.g. "1-5, 8, 11-13"
  */
 
