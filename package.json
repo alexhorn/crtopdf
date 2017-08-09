@@ -8,7 +8,7 @@
   "dependencies": {
     "chrome-launcher": "^0.4.0",
     "chrome-remote-interface": "^0.24.3",
-    "yargs": "^8.0.2"
+    "commander": "^2.11.0"
   },
   "engines": {
     "node": ">7.6"

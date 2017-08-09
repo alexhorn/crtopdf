@@ -1,59 +1,43 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const CrToPdf = require('./crtopdf');
-const argv = require('yargs')
-  .options({
-    'url': {
-      alias: 'u',
-      demandOption: true,
-    },
-    'output': {
-      alias: 'o',
-      demandOption: true,
-    },
-    'orientation': {
-      default: 'portrait',
-    },
-    'print-background': {
-      default: undefined,
-      type: 'boolean',
-    },
-    'format': {
-      default: 'a4',
-    },
-    'margin-top': {
-      default: undefined,
-    },
-    'margin-bottom': {
-      default: undefined,
-    },
-    'margin-left': {
-      default: undefined,
-    },
-    'margin-right': {
-      default: undefined,
-    },
-    'page-ranges': {
-      default: undefined,
-    },
-  })
-  .argv;
+const program = require('commander');
+
+program
+  .option('-u, --url <value>', 'Source URL')
+  .option('-o, --output <value>', 'Output path')
+  .option('--orientation [type]', 'Page orientation (landscape or portrait)')
+  .option('--print-background', 'Print background images')
+  .option('--format [type]', 'Page size (A0-9, letter, legal or ledger)')
+  .option('--margin-top [n]', 'Top margin')
+  .option('--margin-bottom [n]', 'Bottom margin')
+  .option('--margin-left [n]', 'Left margin')
+  .option('--margin-right [n]', 'Right margin')
+  .option('--page-ranges [value]', 'Page ranges (e.g. 1-2, 4-5)')
+  .parse(process.argv);
+
+if (!program.url) {
+  throw new Error('--url required');
+}
+if (!program.output) {
+  throw new Error('--output required');
+}
 
 let pdf = new CrToPdf();
 pdf.init()
 .then(() => pdf.convert({
-  url: argv.url,
-  orientation: argv.orientation,
-  printBackground: argv.printBackground,
-  format: argv.format,
-  marginTop: argv.marginTop,
-  marginBottom: argv.marginBottom,
-  marginLeft: argv.marginLeft,
-  marginRight: argv.marginRight,
-  pageRanges: argv.pageRanges,
+  url: program.url,
+  orientation: program.orientation,
+  printBackground: program.printBackground,
+  format: program.format,
+  marginTop: program.marginTop,
+  marginBottom: program.marginBottom,
+  marginLeft: program.marginLeft,
+  marginRight: program.marginRight,
+  pageRanges: program.pageRanges,
 }))
 .then((buf) => {
-  fs.writeFileSync(argv.output, buf);
+  fs.writeFileSync(program.output, buf);
 })
 .then(() => pdf.dispose())
 .catch((err) => {
