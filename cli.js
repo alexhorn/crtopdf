@@ -5,41 +5,41 @@ const argv = require('yargs')
   .options({
     'url': {
       alias: 'u',
-      demandOption: true
+      demandOption: true,
     },
     'output': {
       alias: 'o',
-      demandOption: true
+      demandOption: true,
     },
     'orientation': {
-      default: 'portrait'
+      default: 'portrait',
     },
     'print-background': {
       default: undefined,
-      type: 'boolean'
+      type: 'boolean',
     },
     'format': {
-      default: 'a4'
+      default: 'a4',
     },
     'margin-top': {
-      default: undefined
+      default: undefined,
     },
     'margin-bottom': {
-      default: undefined
+      default: undefined,
     },
     'margin-left': {
-      default: undefined
+      default: undefined,
     },
     'margin-right': {
-      default: undefined
+      default: undefined,
     },
     'page-ranges': {
-      default: undefined
-    }
+      default: undefined,
+    },
   })
   .argv;
 
-var pdf = new CrToPdf();
+let pdf = new CrToPdf();
 pdf.init()
 .then(() => pdf.convert({
   url: argv.url,
@@ -50,13 +50,13 @@ pdf.init()
   marginBottom: argv.marginBottom,
   marginLeft: argv.marginLeft,
   marginRight: argv.marginRight,
-  pageRanges: argv.pageRanges
+  pageRanges: argv.pageRanges,
 }))
-.then(buf => {
+.then((buf) => {
   fs.writeFileSync(argv.output, buf);
 })
 .then(() => pdf.dispose())
-.catch(err => {
+.catch((err) => {
   console.error(err);
   process.exit(1);
 });

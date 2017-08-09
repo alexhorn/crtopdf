@@ -1,5 +1,4 @@
 class Semaphore {
-
   constructor(capacity) {
     this.counter = capacity;
     this.queue = [];
@@ -22,7 +21,6 @@ class Semaphore {
       this.queue.shift()();
     }
   }
-
 }
 
 module.exports = Semaphore;

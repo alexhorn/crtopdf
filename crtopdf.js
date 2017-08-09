@@ -3,18 +3,18 @@ const CDP = require('chrome-remote-interface');
 const Semaphore = require('./semaphore');
 
 const PAGE_SIZES = {
-  'a0': { width: 33.1, height: 46.8 },
-  'a1': { width: 23.4, height: 33.1, },
-  'a2': { width: 16.5, height: 23.4 },
-  'a3': { width: 11.7, height: 16.5 },
-  'a4': { width: 8.3, height: 11.7 },
-  'a5': { width: 5.8, height: 8.3 },
-  'a6': { width: 4.1, height: 5.8 },
-  'a7': { width: 2.9, height: 4.1 },
-  'a8': { width: 2.0, height: 2.9 },
-  'letter': { width: 8.5, height: 11 },
-  'legal': { width: 8.5, height: 14 },
-  'legder': { width: 17, height: 11 }
+  'a0': {width: 33.1, height: 46.8},
+  'a1': {width: 23.4, height: 33.1},
+  'a2': {width: 16.5, height: 23.4},
+  'a3': {width: 11.7, height: 16.5},
+  'a4': {width: 8.3, height: 11.7},
+  'a5': {width: 5.8, height: 8.3},
+  'a6': {width: 4.1, height: 5.8},
+  'a7': {width: 2.9, height: 4.1},
+  'a8': {width: 2.0, height: 2.9},
+  'letter': {width: 8.5, height: 11},
+  'legal': {width: 8.5, height: 14},
+  'legder': {width: 17, height: 11},
 };
 const CM_PER_INCH = 2.54;
 
@@ -57,7 +57,6 @@ function getRandom(min, max) {
  * });
  */
 class CrToPdf {
-
   constructor() {
     this.sem = new Semaphore(1);
   }
@@ -70,10 +69,10 @@ class CrToPdf {
       port: getRandom(49152, 65535),
       chromeFlags: [
         '--disable-gpu',
-        '--headless'
-      ]
+        '--headless',
+      ],
     });
-    this.protocol = await CDP({ port: this.chrome.port });
+    this.protocol = await CDP({port: this.chrome.port});
   }
 
   /**
@@ -88,7 +87,7 @@ class CrToPdf {
    * Generates a PDF from a web page.
    * Do not call this method until the previous operation has finished.
    * @param {Options} opts - Options
-   * @returns {Buffer} PDF data
+   * @return {Buffer} PDF data
    */
   async convert(opts) {
     await this.sem.down();
@@ -98,12 +97,12 @@ class CrToPdf {
 
       await Page.enable();
 
-      await Page.navigate({ url: opts.url });
+      await Page.navigate({url: opts.url});
 
       await new Promise((resolve, reject) => this.protocol.once('Page.loadEventFired', resolve));
 
-      var pageSize = PAGE_SIZES[(opts.format || 'a4').toLowerCase()];
-      var b64 = await Page.printToPDF({
+      let pageSize = PAGE_SIZES[(opts.format || 'a4').toLowerCase()];
+      let b64 = await Page.printToPDF({
         landscape: !!opts.orientation && opts.orientation.toLowerCase() === 'landscape',
         printBackground: opts.printBackground,
         paperWidth: pageSize.width,
@@ -112,7 +111,7 @@ class CrToPdf {
         marginBottom: opts.marginBottom / CM_PER_INCH,
         marginLeft: opts.marginLeft / CM_PER_INCH,
         marginRight: opts.marginRight / CM_PER_INCH,
-        pageRanges: opts.pageRanges
+        pageRanges: opts.pageRanges,
       });
 
       return new Buffer(b64.data, 'base64');
