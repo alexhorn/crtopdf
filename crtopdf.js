@@ -1,5 +1,6 @@
 const chromeLauncher = require('chrome-launcher');
 const CDP = require('chrome-remote-interface');
+const getPort = require('get-port');
 const Semaphore = require('./semaphore');
 
 const PAGE_SIZES = {
@@ -17,10 +18,6 @@ const PAGE_SIZES = {
   'legder': {width: 17, height: 11},
 };
 const CM_PER_INCH = 2.54;
-
-function getRandom(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 /**
  * Options for generating a PDF.
@@ -66,7 +63,7 @@ class CrToPdf {
    */
   async init() {
     this.chrome = await chromeLauncher.launch({
-      port: getRandom(49152, 65535),
+      port: await getPort(),
       chromeFlags: [
         '--disable-gpu',
         '--headless',
