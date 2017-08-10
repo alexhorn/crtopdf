@@ -1,5 +1,6 @@
 const chromeLauncher = require('chrome-launcher');
 const CDP = require('chrome-remote-interface');
+const EventEmitter = require('events');
 const getPort = require('get-port');
 const Semaphore = require('./semaphore');
 
@@ -53,8 +54,9 @@ const CM_PER_INCH = 2.54;
  *   pdf.dispose();
  * });
  */
-class CrToPdf {
+class CrToPdf extends EventEmitter {
   constructor() {
+    super();
     this.sem = new Semaphore(1);
   }
 
@@ -70,6 +72,11 @@ class CrToPdf {
       ],
     });
     this.protocol = await CDP({port: this.chrome.port});
+    this.connected = true;
+    this.protocol.on('disconnect', () => {
+      this.connected = false;
+      this.emit('disconnect');
+    });
   }
 
   /**
@@ -87,6 +94,10 @@ class CrToPdf {
    * @return {Buffer} PDF data
    */
   async convert(opts) {
+    if (!this.connected) {
+      throw new Error('Not connected. Either init() wasn\'t called or Chrome crashed.');
+    }
+
     await this.sem.down();
 
     try {
