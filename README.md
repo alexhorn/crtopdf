@@ -4,14 +4,14 @@ Convert HTML to PDF in Node.js automatically using Chrome's engine.
 Requires at least Google Chrome 59 (60 on Windows) and Node.js 7.6. See `crtopdf --help` or the JSDoc for further information.
 
 ## CLI Example
-Install with `npm install -g alexhorn/crtopdf`.
+Install with `npm install -g crtopdf`.
 
 ```
 crtopdf -u https://en.wikipedia.org -o wikipedia.pdf
 ```
 
 ## Code Example
-Install with `npm install alexhorn/crtopdf --save` or put `"crtopdf": "github:alexhorn/crtopdf"` in your dependencies.
+Install with `npm install crtopdf --save`.
 
 ```
 var fs = require('fs');
