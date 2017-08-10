@@ -20,5 +20,5 @@
   "main": "./crtopdf.js",
   "name": "crtopdf",
   "repository": "github:alexhorn/crtopdf",
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
