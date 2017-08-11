@@ -1,6 +1,6 @@
 {
   "author": "Alexander Horn",
-  "bin": "./cli.js",
+  "bin": "./dist/cli.js",
   "bugs": "https://github.com/alexhorn/crtopdf/issues",
   "dependencies": {
     "chrome-launcher": "^0.4.0",
@@ -9,16 +9,41 @@
     "get-port": "^3.1.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
     "eslint": "^4.4.1",
     "eslint-config-google": "^0.9.1"
   },
   "engines": {
-    "node": ">7.6"
+    "node": ">6.5"
   },
-  "keywords": ["chrome", "chromium", "convert", "converter", "export", "exporter", "generate", "generator", "google", "headless", "html", "html5", "pdf", "render", "renderer"],
+  "files": [
+    "dist/*"
+  ],
+  "keywords": [
+    "chrome",
+    "chromium",
+    "convert",
+    "converter",
+    "export",
+    "exporter",
+    "generate",
+    "generator",
+    "google",
+    "headless",
+    "html",
+    "html5",
+    "pdf",
+    "render",
+    "renderer"
+  ],
   "license": "BSD-3-Clause",
-  "main": "./crtopdf.js",
+  "main": "./dist/crtopdf.js",
   "name": "crtopdf",
   "repository": "github:alexhorn/crtopdf",
+  "scripts": {
+    "build": "babel *.js --presets babel-preset-es2017 --out-dir dist --source-maps",
+    "prepublish": "npm run build"
+  },
   "version": "1.0.2"
 }
