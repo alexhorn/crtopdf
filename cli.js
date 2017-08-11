@@ -14,6 +14,7 @@ program
   .option('--margin-left [n]', 'Left margin')
   .option('--margin-right [n]', 'Right margin')
   .option('--page-ranges [value]', 'Page ranges (e.g. 1-2, 4-5)')
+  .option('--chrome-path [value]', 'Path to Chrome or Chromium')
   .parse(process.argv);
 
 if (!program.url) {
@@ -23,7 +24,9 @@ if (!program.output) {
   throw new Error('--output required');
 }
 
-let pdf = new CrToPdf();
+let pdf = new CrToPdf({
+  chromePath: program.chromePath,
+});
 pdf.init()
 .then(() => pdf.convert({
   url: program.url,

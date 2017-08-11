@@ -21,8 +21,14 @@ const PAGE_SIZES = {
 const CM_PER_INCH = 2.54;
 
 /**
+ * Options for constructing CrToPdf
+ * @typedef {CtorOptions} Options
+ * @property {string} [chromePath] - Path to installation of Chrome or Chromium
+ */
+
+/**
  * Options for generating a PDF.
- * @typedef {Object} Options
+ * @typedef {ConvertOptions} Options
  * @property {string} url - URL
  * @property {'portrait'|'landscape'} [orientaton] - Paper orientation
  * @property {boolean} [printBackground] - Print background graphics
@@ -55,8 +61,13 @@ const CM_PER_INCH = 2.54;
  * });
  */
 class CrToPdf extends EventEmitter {
-  constructor() {
+  /**
+   * Initializes CrToPdf
+   * @param {CtorOptions} opts - Options
+   */
+  constructor(opts) {
     super();
+    this.opts = opts || {};
     this.sem = new Semaphore(1);
   }
 
@@ -70,6 +81,7 @@ class CrToPdf extends EventEmitter {
         '--disable-gpu',
         '--headless',
       ],
+      chromePath: this.opts.chromePath,
     });
     this.protocol = await CDP({port: this.chrome.port});
     this.connected = true;
@@ -90,7 +102,7 @@ class CrToPdf extends EventEmitter {
   /**
    * Generates a PDF from a web page.
    * Do not call this method until the previous operation has finished.
-   * @param {Options} opts - Options
+   * @param {ConvertOptions} opts - Options
    * @return {Buffer} PDF data
    */
   async convert(opts) {
