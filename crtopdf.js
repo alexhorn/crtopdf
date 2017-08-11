@@ -127,10 +127,10 @@ class CrToPdf extends EventEmitter {
         printBackground: opts.printBackground,
         paperWidth: pageSize.width,
         paperHeight: pageSize.height,
-        marginTop: opts.marginTop / CM_PER_INCH,
-        marginBottom: opts.marginBottom / CM_PER_INCH,
-        marginLeft: opts.marginLeft / CM_PER_INCH,
-        marginRight: opts.marginRight / CM_PER_INCH,
+        marginTop: opts.marginTop && opts.marginTop / CM_PER_INCH,
+        marginBottom: opts.marginBottom && opts.marginBottom / CM_PER_INCH,
+        marginLeft: opts.marginLeft && opts.marginLeft / CM_PER_INCH,
+        marginRight: opts.marginRight && opts.marginRight / CM_PER_INCH,
         pageRanges: opts.pageRanges,
       });
 
