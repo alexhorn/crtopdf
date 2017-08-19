@@ -45,5 +45,5 @@
     "build": "babel *.js --presets babel-preset-es2017 --out-dir dist --source-maps",
     "prepublish": "npm run build"
   },
-  "version": "1.0.2"
+  "version": "1.0.3"
 }
