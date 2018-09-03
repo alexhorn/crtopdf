@@ -16,13 +16,13 @@ Install with `npm install crtopdf --save`.
 ```
 var fs = require('fs');
 var CrToPdf = require('crtopdf');
-
+ 
 var pdf = new CrToPdf();
-
-pdf.init()
-.then(function () {
-  pdf.convert({
-    url: 'https://en.wikipedia.org'
+ 
+async function generatePdf() {
+  await pdf.init();
+  var buf = await pdf.convert({
+    url: 'https://en.wikipedia.org',
     landscape: 'portrait',
     printBackground: true,
     format: 'a4',
@@ -32,13 +32,9 @@ pdf.init()
     marginRight: 1,
     pageRanges: '1-5'
   });
-})
-.then(function (buf) {
   fs.writeFileSync('wikipedia.pdf', buf);
-})
-.then(function () {
-  pdf.dispose();
-});
+  await pdf.dispose();
+}
 ```
 
 ## License
